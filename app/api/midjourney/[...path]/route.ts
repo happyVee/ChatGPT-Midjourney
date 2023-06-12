@@ -2,6 +2,7 @@ import {NextRequest, NextResponse} from "next/server";
 import {auth} from "@/app/api/auth";
 
 const BASE_URL = process.env.MIDJOURNEY_PROXY_URL ?? null;
+const AUTH_TOKEN = process.env.MIDJOURNEY_AUTH_TOKEN ?? null;
 
 async function handle(
     req: NextRequest,
@@ -32,7 +33,7 @@ async function handle(
     }
 
     const reqPath = `${req.nextUrl.pathname}${req.nextUrl.search}`.replaceAll(
-        "/api/midjourney/",
+        "/api/midjourney/mj",
         "",
     );
 
@@ -47,6 +48,7 @@ async function handle(
     const fetchOptions: RequestInit = {
         headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${AUTH_TOKEN}`
         },
         cache: "no-store",
         method: req.method,
